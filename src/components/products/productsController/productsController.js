@@ -1,4 +1,4 @@
-const productManager = require('../../productManager');
+const productManager = require('../productsService/productManager');
 
 class ProductsController {
     async getProducts(req, res) {
