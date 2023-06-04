@@ -5,16 +5,16 @@ class ProductManager {
     static id = 0;
 
     constructor() {
-        this.props = ['title', 'description', 'price', 'code', 'stock', 'category', 'status'];
+        this.props = ['title', 'description', 'price', 'code', 'stock'];
         this.path = FILE;
         try {
-            this.products = JSON.parse(fs.readFileSync(this.path, 'utf-8'))
+            this.products = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
         } catch (error) {
-            this.products = []
+            this.products = [];
         }
         ProductManager.id = this.products.reduce((prev, curr) => (
             curr.id >= prev ? curr.id : prev
-        ), 0)
+        ), 0);
     }
 
     async getProducts() {
@@ -33,16 +33,20 @@ class ProductManager {
         try {
             for (let prop of this.props) {
                 if (!product.hasOwnProperty(prop) || this.isValidateCode(product)) {
-                    return 'Producto invalido!';
+                    return 'Producto inválido!';
                 }
             }
 
-            if (product.thumbnails && !Array.isArray(product.thumbnails)) {
-                return 'Producto invalido!';
-            }
+            const id = ++ProductManager.id;
+            const newProduct = {
+                id,
+                status: true,
+                thumbnails: [],
+                ...product
+            };
 
-            this.products = [...this.products, { id: ++ProductManager.id, ...product, status: true, thumbnail: product.thumbnails || [] }];
-            await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2))
+            this.products.push(newProduct);
+            await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2));
         } catch (error) {
             console.log(error);
         }
@@ -50,18 +54,18 @@ class ProductManager {
 
     async getProductById(id) {
         try {
-            let productId = this.products.find(product => product.id === id);
-            return productId ?? 'Not found';
+            const product = this.products.find(product => product.id === id);
+            return product ?? 'Producto no encontrado';
         } catch (error) {
             console.log(error);
         }
     }
 
-    async updateProduct(index, field, newValue) {
+    async updateProduct(id, field, newValue) {
         try {
-            const updateProductIndex = this.products.findIndex(product => product.id === index)
-            if (updateProductIndex !== -1) {
-                this.products[updateProductIndex][field] = newValue;
+            const product = this.products.find(product => product.id === id);
+            if (product) {
+                product[field] = newValue;
                 await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2));
             }
         } catch (error) {
@@ -69,7 +73,7 @@ class ProductManager {
         }
     }
 
-    async deleteProducts(id) {
+    async deleteProduct(id) {
         try {
             this.products = this.products.filter(product => product.id !== id);
             await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2));
@@ -79,36 +83,35 @@ class ProductManager {
     }
 }
 
-const productManager = new ProductManager()
+const productManager = new ProductManager();
 
 module.exports = productManager;
 
-productManager.addProduct({
-    title: 'pen',
-    description: 'this is a pen',
-    price: 200,
-    thumbnail: 'imagen.jpg',
-    code: 1800,
-    stock: 5
-});
+(async () => {
+    await productManager.addProduct({
+        title: 'pen',
+        description: 'this is a pen',
+        price: 200,
+        code: '1800',
+        stock: 5,
+        thumbnails: ['imagen.jpg']
+    });
 
-productManager.addProduct({
-    title: 'pencil',
-    description: 'this is a pencil',
-    price: 200,
-    thumbnail: 'imagen.jpg',
-    code: 1850,
-    stock: 5
-});
+    await productManager.addProduct({
+        title: 'pencil',
+        description: 'this is a pencil',
+        price: 200,
+        code: '1850',
+        stock: 5,
+        thumbnails: ['imagen.jpg']
+    });
 
-productManager.addProduct({
-    title: 'stencil',
-    description: 'this is a stencil',
-    price: 200,
-    thumbnail: 'imagen.jpg',
-    code: 1500,
-    stock: 5
-});
-
-
-module.exports = productManager;
+    await productManager.addProduct({
+        title: 'stencil',
+        description: 'this is a stencil',
+        price: 200,
+        code: '1500',
+        stock: 5,
+        thumbnails: ['imagen.jpg']
+    });
+})();
