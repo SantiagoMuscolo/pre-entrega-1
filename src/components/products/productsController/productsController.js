@@ -1,5 +1,4 @@
 const productManager = require('../productsService/productManager');
-const bodyParser = require("body-parser");
 
 class ProductsController {
     async getProducts(req, res) {

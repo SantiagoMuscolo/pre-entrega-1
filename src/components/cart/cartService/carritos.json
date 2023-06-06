@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "products": [
+        {
+        "title": "pencol",
+        "description": "this is a pencol",
+        "price": 250,
+        "code": "1800",
+        "stock": 8,
+        "thumbnails": [
+          "imagen.jpg"
+        ]
+      }
+    ]
+  }
+]
