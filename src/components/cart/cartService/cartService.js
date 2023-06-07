@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const FILE = path.join(__dirname, 'carritos.json');
+const FILE = path.join(__dirname, 'carrito.json');
 
 class CartService {
     constructor() {
