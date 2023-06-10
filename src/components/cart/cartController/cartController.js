@@ -2,6 +2,14 @@ const CartService = require('../cartService/cartService');
 
 class CartController {
 
+    getAllCarts(req, res) {
+        try {
+            res.send(CartService.getAllCarts());
+        } catch (error) {
+            res.status(500).send('Error al obtener los carritos.');
+        }
+    }
+
     async createCart(req, res) {
         try {
             const { products } = req.body;

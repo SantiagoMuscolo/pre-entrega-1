@@ -7,7 +7,7 @@ module.exports = app => {
     app.use(bodyParser.urlencoded({ extended: true }));
     let router = new Router();
 
-    app.use('/api/products/', router);
+    app.use('/api/products', router);
     
     router.get('/', productsController.getProducts);
     router.get('/:pid', productsController.getProductById);

@@ -22,12 +22,20 @@ class CartService {
         ), 0);
     }
 
-    async createCart(products) {
+    getAllCarts(){
+        try{
+            return this.carritos;
+        }catch(error) {
+            console.log(error)
+        }
+    }
+
+    async createCart() {
         try {
             const id = ++CartService.id;
             const newCart = {
                 id,
-                products: products
+                products: []
             };
     
             this.carritos.push(newCart);
@@ -52,30 +60,27 @@ class CartService {
         }
     }
 
-    async addProduct(cartId, productId, products) {
+    async addProduct(cartId, productId) {
         try {
-            const cart = this.carritos.find(cart => cart.id === cartId);
+            const selectedCartIndex = this.carritos.findIndex(cart => cart.id === cartId);
 
-            if (!cart) {
+            if (selectedCartIndex === -1) {
                 throw new Error('Carrito no encontrado');
             }
 
-            const existingProduct = cart.products.find(product => product.id === productId);
+            const selectedCart = this.carritos[selectedCartIndex];
 
-            if (existingProduct) {
-                existingProduct.quantity += 1;
-            } else {
-                const newProduct = {
-                    id: productId,
-                    ...products,
-                    quantity: 1
-                };
-                
+            const selectedProduct = selectedCart.products.find(cart => cart.product === productId);
 
-                cart.products.push(newProduct);
-                await fs.promises.writeFile(this.path, JSON.stringify(this.carritos, null, 2));
-                return newProduct;
+
+            if (selectedProduct) {
+                selectedProduct.quantity += 1;
+                console.log(selectedProduct)
+            }else{
+                    selectedCart.products.push({ product: productId, quantity: 1 });
             }
+                this.carritos[selectedCartIndex] = selectedCart;
+                await fs.promises.writeFile(this.path, JSON.stringify(this.carritos, null, 2));
         } catch (error) {
             console.log(`[ERROR] -> ${error}`);
         }
