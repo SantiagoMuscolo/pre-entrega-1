@@ -26,7 +26,7 @@ class CartService {
         try{
             return this.carritos;
         }catch(error) {
-            console.log(error)
+            console.log(error);
         }
     }
 

@@ -42,5 +42,15 @@
     "price": 550,
     "code": "9900",
     "stock": 11
+  },
+  {
+    "id": 6,
+    "status": true,
+    "thumbnails": "imagen.jpg",
+    "title": "clock",
+    "description": "this is a clock",
+    "price": 260,
+    "code": "1650",
+    "stock": 10
   }
 ]

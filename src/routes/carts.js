@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const cartsController = require('./cartController/cartController')
+const cartsController = require('../components/cart/cartController/cartController')
 const bodyParser = require("body-parser");
 
 module.exports = app => {

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const productsController = require('./productsController/productsController')
+const productsController = require('../components/products/productsController/productsController');
 const bodyParser = require("body-parser");
 
 module.exports = app => {

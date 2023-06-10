@@ -5,14 +5,9 @@ const routes = require('./routes');
 class Server{
     constructor(){
         this.app = express();
-        this.settings();
         this.routes();
     }
 
-    settings(){
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({extended: true}));
-    }
 
     routes(){
         routes(this.app);
