@@ -1,5 +1,5 @@
 const fs = require('fs');
-const FILE = './products.json';
+const FILE = './productos.json';
 
 class ProductManager {
     static id = 0;
